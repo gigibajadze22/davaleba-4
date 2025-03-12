@@ -12,5 +12,4 @@ app.use(express.json())
 
 app.use('/product',productRouter)
 
-
 export default app
