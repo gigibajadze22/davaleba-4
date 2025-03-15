@@ -9,7 +9,6 @@ dotenv.config({path: "./config.env"})
 const app = express()
 app.use(express.json())
 
-
 app.use('/product',productRouter)
 
 export default app
