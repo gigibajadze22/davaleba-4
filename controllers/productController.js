@@ -1,42 +1,52 @@
-import mongoose from 'mongoose';
-  
-const productsSchema = new mongoose.Schema({
-    id :{type: Number, required: true, unique:true},
-    name :{type: String, required: true},
-    price :{type: Number, required: true},
-    stock :{type: Number, required: true},
-    createdAt :{type: Date, default: Date.now}
-})
-
-const Product = mongoose.model("Product", productsSchema)
-
+import Product from "../models/productModel"
 
 const getProducts = async (req,res) =>{
-    const product = await Product.find({}) 
-    res.json(product)
+  try{
+    const product = await Product.find({name:'Product 4'}) 
+  res.json(product)
+  }catch(error) {
+    res.status(400).json({message: error.message})
+  }
+  
 }
 const createProducts = async (req,res) => {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).send(product);
-  }
+try{
+   const product = new Product({...req.body, id: Date.now()});
+  await product.save();
+  res.status(201).json(product);
+}catch(error) {
+  res.status(400).json({message: error.message})
+}
 
-  const editProducts = async (req,res) => {
+}
+
+const editProducts = async (req,res) => {
+  try{
     const productId = parseInt(req.params.id);
-    const updatedProduct = await Product.findOneAndUpdate({ id: productId }, req.body, { new: true });
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    res.json(updatedProduct);
-  };
-// Delete product by ID
+  const updatedProduct = await Product.findOneAndUpdate({ id: productId }, req.body, { new: true });
+  if (!updatedProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+  res.json(updatedProduct);
+}catch(error) {
+  res.status(400).json({message: error.message})
+}
+
+  }
+  
+
 const deleteProducts = async (req,res) => {
+  try{
     const productId = parseInt(req.params.id);
-    const deletedProduct = await Product.findOneAndDelete({ id: productId });
-    if (!deletedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    res.send("Product deleted");
-  };
+  const deletedProduct = await Product.findOneAndDelete({ id: productId });
+  if (!deletedProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+  res.send("Product deleted");
+  }catch(error) {
+    res.status(400).json({message: error.message})
+  }
+  
+};
 
 export {getProducts, createProducts, editProducts, deleteProducts} 
