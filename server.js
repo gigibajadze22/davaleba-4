@@ -7,11 +7,11 @@ const DB_URL = process.env.DB_URL.replace(
     .replace("<USERNAME>", process.env.DB_USER)
 
 mongoose.connect(DB_URL)
-.then(() =>{
-    console.log("connected to the database");
-})
+    .then(() => {
+        console.log("connected to the database");
+    })
 
 
-app.listen(3000,() =>{
+app.listen(3000, () => {
     console.log('server is running on port 3000');
 })
